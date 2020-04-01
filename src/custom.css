@@ -1,0 +1,9 @@
+.footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+.footer .nav-btn a{
+    padding: 5px 0px;
+}
