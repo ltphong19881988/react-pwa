@@ -1,6 +1,13 @@
 const server = require('express')();
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
+
+server.engine('html', require('ejs').renderFile);
+server.set('view engine', 'html');
+server.get('/', function(req, res){
+    res.json('hello');
+})
+
 let players = [];
 let room = ['room 1', 'room 2'];
 class RoomPlayer {
@@ -71,6 +78,6 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(80, function () {
+http.listen(5000, function () {
     console.log('Server started!');
 });
