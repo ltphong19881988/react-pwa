@@ -1,7 +1,13 @@
 export default class Zone {
     constructor(scene) {
         this.renderZone = () => {
-            let dropZone = scene.add.zone(700, 375, 900, 250).setRectangleDropZone(900, 250);
+            // console.log(scene, scene.cameras.main);
+            var mainWidth =scene.cameras.main.width ;
+            var mainHeight =scene.cameras.main.height ;
+            var height = mainHeight/4;
+            var width = mainWidth/6;
+            // console.log(width, height);
+            let dropZone = scene.add.zone(width*3, height*2, width * 4, height*2).setRectangleDropZone(width * 4, height * 2);
             dropZone.setData({ cards: 0 });
             return dropZone;
         };
