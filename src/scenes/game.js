@@ -45,8 +45,6 @@ export default class Game extends Phaser.Scene {
 
         let self = this;
 
-        // this.socket = io('http://localhost:5000');
-
         
 
         this.socket.emit('gameInited');
