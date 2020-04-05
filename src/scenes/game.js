@@ -4,7 +4,6 @@ import Card from '../helpers/card';
 import Dealer from "../helpers/dealer";
 import Zone from '../helpers/zone';
 import TextButton from '../helpers/text-button';
-import SceneSocket from './scene-socket';
 
 export default class Game extends Phaser.Scene {
     constructor() {

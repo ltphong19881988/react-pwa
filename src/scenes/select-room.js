@@ -4,7 +4,6 @@ import Card from '../helpers/card';
 import Dealer from "../helpers/dealer";
 import Zone from '../helpers/zone';
 import TextButton from '../helpers/text-button';
-import SceneSocket from "./scene-socket";
 import Game from "./game";
 
 export default class SelectRoom extends Phaser.Scene {
