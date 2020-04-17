@@ -11,8 +11,8 @@ export default class SelectRoom extends Phaser.Scene {
         super({
             key: 'SelectRoom'
         });
-        // this.socket = io('http://45.77.44.244:5000');
-        this.socket = io('http://localhost:5000');
+        this.socket = io('http://207.148.121.192:5000');
+        // this.socket = io('http://localhost:5000');
         this.socket.on('connect', function() {
             // console.log('selectt room socket Connected!');
             this.emit('listRoom');
