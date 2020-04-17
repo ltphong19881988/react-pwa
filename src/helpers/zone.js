@@ -7,7 +7,7 @@ export default class Zone {
             var height = mainHeight/4;
             var width = mainWidth/6;
             // console.log(width, height);
-            let dropZone = scene.add.zone(width*3, height*2, width * 4, height*2).setRectangleDropZone(width * 4, height * 2);
+            let dropZone = scene.add.zone(width*3, height*2, width * 4 - 200 , height*2 - 50).setRectangleDropZone(width * 4 - 200, height * 2 - 50);
             dropZone.setData({ cards: 0 });
             return dropZone;
         };

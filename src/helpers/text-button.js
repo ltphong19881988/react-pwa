@@ -4,13 +4,15 @@ export default class TextButton extends Phaser.GameObjects.Container {
     mySocket;
     myScope;
     constructor(scene, x, y, text, style, _socket) {
-        var text = new GameObjects.Text(scene, -40, -5, text, style.textStyle);
-        var rectangle = new GameObjects.Rectangle(scene, 0,  0, 100, 40, style.recStyle.bgColor);
+        var text = new GameObjects.Text(scene, -45, -15, text, style.textStyle);
+        var countPlayer = new GameObjects.Text(scene, -50, 0, 'players: 0', style.textStyle);
+        var rectangle = new GameObjects.Rectangle(scene, 0,  0, 120, 50, style.recStyle.bgColor);
         if(style.recStyle.border) rectangle.setStrokeStyle(style.recStyle.border.width, style.recStyle.border.color);
-        super(scene, x + 40, y + 5, [rectangle, text]);
-        this.setSize(100, 40);
+        super(scene, x + 40, y + 5, [rectangle, text, countPlayer]);
+        this.setSize(120, 50);
         this.setInteractive({ useHandCursor: true });  
         this.style = style;
+        this.selected = false;
         this.myScope = scene;
         this.mySocket = _socket;
         scene.add.existing(this);
@@ -24,6 +26,20 @@ export default class TextButton extends Phaser.GameObjects.Container {
 
     }
 
+    setCountPlayers(num){
+        this.list[2].setText('players: ' + num);
+    }
+
+    setSelectedRectangle(){
+        this.selected = true;
+        this.list[0].setFillStyle(0x44ff44);
+    }
+
+    removeSelectedRectangle(){
+        this.selected = false;
+        this.list[0].setFillStyle(this.style.recStyle.bgColor);
+    }
+
     pointerUp(pointer) {
         this.mySocket.emit('room-click', {name : this.list[1].text, roomJoined : this.myScope.roomJoined});
     }
@@ -33,12 +49,14 @@ export default class TextButton extends Phaser.GameObjects.Container {
     }
 
     pointerOver(pointer) {
-        // console.log('over over over', this.list[1].text);
+        // console.log('over over over', this.list[2]);
+        
         this.list[0].setFillStyle(0x44ff44);
     }
 
     pointerOut(pointer) {
         // console.log('out out out');
+        if(this.selected == false)
         this.list[0].setFillStyle(this.style.recStyle.bgColor);
     }
 

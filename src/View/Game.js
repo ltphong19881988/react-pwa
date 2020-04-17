@@ -7,8 +7,11 @@ import { IonPhaser } from '@ion-phaser/react'
 const config = {
     type: Phaser.AUTO,
     parent: "phaser-example",
-    width: 1200,
-    height: 700,
+    width: 667,
+    height: 375,
+    dom: {
+        createContainer: true
+    },
     scene: [
         SelectRoom, Game
     ]

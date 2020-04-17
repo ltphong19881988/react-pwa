@@ -10,13 +10,13 @@ export default class Game extends Phaser.Scene {
         super({
             key: 'Game'
         });
-        console.log(this.socket);
     }
 
     init (data){
         this.socket = data.socket;
         this.roomJoined = data.roomJoined;
-        console.log(this.roomJoined );
+        this.playerName = data.playerName;
+        
         // console.log(this.socket.id);
     }
 
@@ -32,8 +32,9 @@ export default class Game extends Phaser.Scene {
     create() {
         this.frames = this.textures.get('cards').getFrameNames();
         // console.log(this.frames);
-        this.isPlayerA = false;
-        this.opponentCards = [];
+        
+        this.opponentCards = [[],[],[],[]];
+        this.listPlayers = [];
         this.listRoomBtn = [];
 
         this.zone = new Zone(this);
@@ -46,29 +47,50 @@ export default class Game extends Phaser.Scene {
 
         
 
-        this.socket.emit('gameInited');
+        this.socket.emit('gameInited', this.roomJoined);
 
         this.socket.on('isPlayerA', function() {
             self.isPlayerA = true;
         })
 
-        this.socket.on('dealCards', function() {
-            self.dealer.dealCards();
+        this.socket.on('dealCardsDone', function() {
+            self.socket.emit('getCards', self.roomJoined);
+        })
+
+        this.socket.on('getCards', function(listCards, listPlayers) {
+            console.log(listPlayers.indexOf(self.socket.id));
+            self.listPlayers.push(self.socket.id);
+            var myIndex = listPlayers.indexOf(self.socket.id);
+            for(var i = myIndex + 1; i < listPlayers.length; i++){
+                self.listPlayers.push(listPlayers[i]);
+            }
+            for(var i = 0; i < myIndex; i ++){
+                self.listPlayers.push(listPlayers[i]);
+            }
+            self.dealer.dealCards(listCards);
+            console.log(self.listPlayers, listPlayers);
             // self.dealText.disableInteractive();
         })
 
         this.socket.on('cardPlayed', function(gameObject, player) {
-            console.log(player, self.socket.id);
+            // console.log(player, self.socket.id);
+            var pIndex = self.listPlayers.indexOf(player);
+            
             if (self.socket.id !== player) {
                 let sprite = gameObject.frameKey;
                 console.log(gameObject);
-                self.opponentCards.shift().destroy();
+                self.opponentCards[pIndex].shift().destroy();
                 self.dropZone.data.values.cards++;
+                console.log(self.dropZone.data.values.cards);
                 let card = new Card(self);
-                card.render(((self.dropZone.x - 350) + (self.dropZone.data.values.cards * 50)), (self.dropZone.y), sprite).disableInteractive();
+                card.render(((self.dropZone.x - 150) + (self.dropZone.data.values.cards * 20)), (self.dropZone.y), sprite, 0).disableInteractive();
             }
         })
         
+        this.socket.on("disconnect", function(){
+            self.socket.emit('phongle');
+            console.log("client disconnected from server");
+        });
 
         // this.dealText = this.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
 
@@ -104,7 +126,7 @@ export default class Game extends Phaser.Scene {
 
         this.input.on('drop', function(pointer, gameObject, dropZone) {
             dropZone.data.values.cards++;
-            gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 50);
+            gameObject.x = (dropZone.x - 150) + (dropZone.data.values.cards * 20);
             gameObject.y = dropZone.y;
             gameObject.disableInteractive();
             console.log(self.roomJoined );

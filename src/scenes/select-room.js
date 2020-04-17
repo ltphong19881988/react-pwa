@@ -11,8 +11,8 @@ export default class SelectRoom extends Phaser.Scene {
         super({
             key: 'SelectRoom'
         });
-        this.socket = io('http://45.77.44.244:5000');
-        console.log(this.socket);
+        // this.socket = io('http://45.77.44.244:5000');
+        this.socket = io('http://localhost:5000');
         this.socket.on('connect', function() {
             // console.log('selectt room socket Connected!');
             this.emit('listRoom');
@@ -20,6 +20,7 @@ export default class SelectRoom extends Phaser.Scene {
     }
 
     preload() {
+        this.load.html('nameform', 'assets/text/nameform.html');
         // console.log(process.env.PUBLIC_URL);
         // this.load.image('cyanCardFront',  '/assets/CyanCardFront.png');
         // this.load.image('cyanCardBack', '/assets/CyanCardBack.png');
@@ -29,11 +30,33 @@ export default class SelectRoom extends Phaser.Scene {
 
     create() {
         this.roomJoined = '';
-        this.isPlayerA = false;
+        this.playerName = '';
         // this.opponentCards = [];
         this.listRoomBtn = [];
             
         let self = this;
+
+        var element = this.add.dom(300, 40).createFromCache('nameform');
+        element.addListener('click');
+        element.on('click', function (event) {
+
+            if (event.target.name === 'playButton')
+            {
+                var inputText = this.getChildByName('nameField');
+    
+                //  Have they entered anything?
+                if (inputText.value !== '')
+                {
+                    self.playerName = inputText.value;
+                    console.log(self.playerName);
+                }
+                else
+                {
+
+                }
+            }
+    
+        });
 
         if(this.socket.connected){
             // console.log('Game Connected!');
@@ -53,24 +76,33 @@ export default class SelectRoom extends Phaser.Scene {
                     }
                     
                 };
-                self.listRoomBtn[key] = new TextButton(self, 100 + 120*key, 100, value, style, self.socket);
+                self.listRoomBtn[key] = new TextButton(self, 100 + 150*key, 100, value, style, self.socket);
                 // console.log(self.listRoomBtn[key]);
             });
             // self.clickButton = new TextButton(self, 100, 100, 'Click me!', { fill: '#0f0'});
             // self.add.existing(self.clickButton);
         })
 
-        this.socket.on('roomJoined', function(name){
+        this.socket.on('roomJoined', function(name, index, players, id){
             self.roomJoined = name;
+            self.listRoomBtn[index].setCountPlayers(players);
+            if(self.socket.id == id){
+                self.listRoomBtn[index].setSelectedRectangle();
+            }
         })
 
-        this.socket.on('isPlayerA', function() {
-            self.isPlayerA = true;
-        })
+        this.socket.on('roomLeaved', function(index, players, id){
+            // console.log('leave', index, players);
+            self.listRoomBtn[index].setCountPlayers(players);
+            if(self.socket.id == id){
+                self.listRoomBtn[index].removeSelectedRectangle();
+            }
+        });
+
 
         this.socket.on('roomToGame', function() {
             console.log('start game');
-            self.scene.start('Game', {socket: self.socket, roomJoined: self.roomJoined});
+            self.scene.start('Game', {socket: self.socket, roomJoined: self.roomJoined, playerName: self.playerName});
         })
         
         
