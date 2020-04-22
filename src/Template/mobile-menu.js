@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, Button, NavDropdown, Form, FormControl } from 'react-bootstrap';
+import Swipe from 'react-easy-swipe';
 
 class MobileMenu extends Component {
+  onSwipeStart(event) {
+    console.log('Start swiping...', event);
+  }
+ 
+  onSwipeMove(position, event) {
+    console.log(`Moved ${position.x} pixels horizontally`, event);
+    console.log(`Moved ${position.y} pixels vertically`, event);
+  }
+ 
+  onSwipeEnd(event) {
+    console.log('End swiping...', event);
+  }
+
     render() {
       return (
-        <Navbar bg="dark" expand="lg" >
+        <Swipe
+        onSwipeStart={this.onSwipeStart}
+        onSwipeMove={this.onSwipeMove}
+        onSwipeEnd={this.onSwipeEnd}>
+            <Navbar bg="dark" expand="lg" >
             <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -24,7 +42,9 @@ class MobileMenu extends Component {
                 <Button variant="outline-success">Search</Button>
                 </Form>
             </Navbar.Collapse>
-        </Navbar>
+          </Navbar>
+        </Swipe>
+        
       );
     }
   }

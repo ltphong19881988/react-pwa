@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
-
+import Swipe from 'react-easy-swipe';
+// import ReactDOM from 'react-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -42,6 +43,26 @@ const CompletedTasks = () => (
 );
 
 class App extends Component {
+  onSwipeUp(a,event) {
+    document.getElementsByClassName('footer')[0].style.height = "auto";
+    document.getElementsByClassName('footer')[0].style.padding = "10px";
+  }
+ 
+  onSwipeMove(position, event) {
+    // console.log(`Moved ${position.x} pixels horizontally`, event);
+    // console.log(`Moved ${position.y} pixels vertically`, event);
+  }
+ 
+  onSwipeDown(event) {
+    console.log('Down swiping...', event);
+    document.getElementsByClassName('footer')[0].style.height = "1px";
+    document.getElementsByClassName('footer')[0].style.padding = "0px";
+  }
+
+  onSwipeEnd(a, event) {
+    // console.log('End swiping...', event);
+  }
+
   render() {
     return (
       
@@ -65,24 +86,31 @@ class App extends Component {
             <Profile />
           </Route>
         </Switch>
-        <div className='footer'>
-          <Container>
-            <Row>
-            <Col className="nav-btn" xs={3}>
-                <Link to="/">Home</Link>
-            </Col>
-            <Col className="nav-btn" xs={3}>
-              <Link to="/game">Game</Link>
-            </Col>
-            <Col className="nav-btn" xs={3}>
-                <Link to="/about">About</Link>
-            </Col>
-            <Col className="nav-btn" xs={3}>
-                <Link to="/profile">Profile</Link>
-            </Col>
-            </Row>
-          </Container>
-        </div>
+        <Swipe
+          onSwipeUp={this.onSwipeUp}
+          onSwipeMove={this.onSwipeMove}
+          // onSwipeEnd={this.onSwipeEnd}
+          onSwipeDown={this.onSwipeDown}>
+              <div className='footer'>
+                <Container>
+                  <Row>
+                  <Col className="nav-btn" xs={3}>
+                      <Link to="/">Home</Link>
+                  </Col>
+                  <Col className="nav-btn" xs={3}>
+                    <Link to="/game">Game</Link>
+                  </Col>
+                  <Col className="nav-btn" xs={3}>
+                      <Link to="/about">About</Link>
+                  </Col>
+                  <Col className="nav-btn" xs={3}>
+                      <Link to="/profile">Profile</Link>
+                  </Col>
+                  </Row>
+                </Container>
+              </div>
+        </Swipe>  
+        
       </BrowserRouter>
 
     );

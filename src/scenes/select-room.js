@@ -43,8 +43,8 @@ export default class SelectRoom extends Phaser.Scene {
             if (event.target.name === 'playButton')
             {
                 var inputText = this.getChildByName('nameField');
-    
-                //  Have they entered anything?
+                window.location.href = '/home';
+                //  Have they entered anything? 
                 if (inputText.value !== '')
                 {
                     self.playerName = inputText.value;

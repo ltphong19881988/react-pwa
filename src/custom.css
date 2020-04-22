@@ -2,8 +2,16 @@
     position: fixed;
     bottom: 0px;
     width: 100%;
+    background-color: darkslategray;
+    padding: 10px;
 }
 
 .footer .nav-btn a{
     padding: 5px 0px;
+    color: #fff;
 }
+
+.footer .nav-btn a:hover, .footer .nav-btn a:active{
+    color: red;
+}
+

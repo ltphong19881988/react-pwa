@@ -7,8 +7,15 @@ import { IonPhaser } from '@ion-phaser/react'
 const config = {
     type: Phaser.AUTO,
     parent: "phaser-example",
-    width: 667,
-    height: 375,
+    // width: 667,
+    // height: 375,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1100,
+        height: 600
+    },
     dom: {
         createContainer: true
     },
