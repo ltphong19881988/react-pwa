@@ -7,6 +7,7 @@ const initialState = {
   metaCoin: null,
   coin_balance: null,
   check_web3: true,
+  events : []
 };
  
 const rootReducer = (state = initialState, action) => {
@@ -33,6 +34,13 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         check_web3: action.check_web3
       }
+    case "GET_EVENTS" :
+      return {
+        ...state,
+        events : [...state.events, action.data]
+      }
+      
+      
     default:
       return state;
   }

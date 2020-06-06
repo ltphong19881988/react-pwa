@@ -38,6 +38,7 @@ export const instantiateContracts = () => async (dispatch, getState) => {
   let metaCoin = new web3.eth.Contract(PUCT.ABI, PUCT.address, {
     transactionConfirmationBlocks: 1
   });
+  console.log('metaCoin', metaCoin);
   dispatch({
     type: INIT_CONTRACT,
     metaCoin
@@ -58,4 +59,21 @@ export const getCoinBalance = () => async (dispatch, getState) => {
     type: GET_COIN_BALANCE,
     coin_balance
   });
+};
+
+//////////////////////////////////////////////
+
+export const GET_EVENTS = 'GET_EVENTS';
+export const getEvents = () => async (dispatch, getState) => {
+  const state = getState();
+  const metaCoin = state.metaCoin;
+  const account = state.account;
+  let events = await metaCoin.events.Transfer({ fromBlock: 0 }, function (err, data){
+    console.log('events', err, data);
+    dispatch({
+      type: 'GET_EVENTS',
+      data : data
+    });
+  })
+  
 };

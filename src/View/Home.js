@@ -42,20 +42,27 @@ function DARK() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const {check_web3, balance, account, coin_balance } = useSelector((state) => ({
+    const {check_web3, balance, account, coin_balance, events } = useSelector((state) => ({
         check_web3 : state.check_web3,
         balance: state.balance,
         account: state.account,
-        coin_balance : state.coin_balance
-      }));
+        coin_balance : state.coin_balance,
+        events : state.events,
+    }));
     
+    
+
     useEffect(() => {
         async function fetWeb3Init() {
+            
             console.log('check_web3', check_web3);
             await dispatch(actions.web3Connect());
             console.log('check_web3', check_web3);
             await dispatch(actions.instantiateContracts());
             await dispatch(actions.getCoinBalance());
+            await dispatch(actions.getEvents());
+
+            
         //   await dispatch(actions.getBalance());
          console.log(account);
         //   if(account == null){
@@ -67,8 +74,13 @@ function DARK() {
      
      
         fetWeb3Init();
-      }, [dispatch]);
+    }, [dispatch]);
 
+
+        
+
+        
+    
 
     return (
         <div>
@@ -77,6 +89,13 @@ function DARK() {
         Your ETH Balance : {balance}
         <br/>
         Your Token Balance : {coin_balance}
+        <br/>
+        Events : <br/>
+        <ul>
+        {
+            events.map((value, index) =>  <li key={index}>{ JSON.stringify(value.returnValues) }</li>)
+        }
+        </ul>
         </div>
     )
 }
