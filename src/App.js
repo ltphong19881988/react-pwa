@@ -15,7 +15,7 @@ import {Home, About, Profile} from './View/Home';
 const NavBar = () => (
   <div className="navbar">
     <h3>Task Manager</h3>
-    <Link to="/">Current Tasks feaw feaw</Link>
+    <Link to="/current">Current Tasks feaw feaw</Link>
     <Link to="/completed">Completed Tasks fewa fw</Link>
   </div>
 );
@@ -43,33 +43,32 @@ const CompletedTasks = () => (
 );
 
 class App extends Component {
-  onSwipeUp(a,event) {
-    document.getElementsByClassName('footer')[0].style.height = "auto";
-    document.getElementsByClassName('footer')[0].style.padding = "10px";
-  }
+    onSwipeUp(a,event) {
+      document.getElementsByClassName('footer')[0].style.height = "auto";
+      document.getElementsByClassName('footer')[0].style.padding = "10px";
+    }
  
-  onSwipeMove(position, event) {
-    // console.log(`Moved ${position.x} pixels horizontally`, event);
-    // console.log(`Moved ${position.y} pixels vertically`, event);
-  }
- 
-  onSwipeDown(event) {
-    console.log('Down swiping...', event);
-    document.getElementsByClassName('footer')[0].style.height = "1px";
-    document.getElementsByClassName('footer')[0].style.padding = "0px";
-  }
+    onSwipeMove(position, event) {
+      // console.log(`Moved ${position.x} pixels horizontally`, event);
+      // console.log(`Moved ${position.y} pixels vertically`, event);
+    }
+  
+    onSwipeDown(event) {
+      console.log('Down swiping...', event);
+      document.getElementsByClassName('footer')[0].style.height = "1px";
+      document.getElementsByClassName('footer')[0].style.padding = "0px";
+      }
 
-  onSwipeEnd(a, event) {
-    // console.log('End swiping...', event);
-  }
+    onSwipeEnd(a, event) {
+      // console.log('End swiping...', event);
+    }
 
   render() {
     return (
       
       <BrowserRouter>
         <div>
-          
-          <Route exact path="/" component={CurrentTasks}/>
+          <Route exact path="/current" component={CurrentTasks}/>
           <Route path="/completed" component={CompletedTasks}/>
         </div>
         <Switch>
