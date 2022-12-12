@@ -10,7 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.4.1",
     "ejs": "^3.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "json-loader": "^0.5.7",
     "phaser": "^3.22.0",
     "react": "^16.13.1",
